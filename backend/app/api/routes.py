@@ -78,12 +78,16 @@ async def get_weather(
 async def get_market_prices(
     crop: str,
     state: str = "",
+    district: str = "",
+    market: str = "",
     limit: int = 20,
 ):
     try:
         return await market_service.get_market_prices(
             crop=crop,
             state=state,
+            district=district,
+            market=market,
             limit=limit,
         )
     except ValueError as exc:

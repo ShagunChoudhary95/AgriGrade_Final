@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.api.routes import router
+from app.api.market import router as market_router
 
 app = FastAPI(
     title="AgriGrade AI API",
@@ -26,6 +27,7 @@ app.add_middleware(
 )
 
 app.include_router(router, prefix="/api")
+app.include_router(market_router)
 
 
 @app.get("/")

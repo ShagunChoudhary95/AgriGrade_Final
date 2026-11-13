@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -27,14 +28,27 @@ class Settings(BaseSettings):
     openweathermap_api_key: str = ""
 
     # Market price API configuration
-    market_api_base_url: str = ""
+    market_api_base_url: str = (
+        "https://api.data.gov.in/resource/"
+        "9ef84268-d588-465a-a308-a864a43d0070"
+    )
     market_api_key: str = ""
+    data_gov_api_key: str = ""
 
     # Load environment variables from the backend .env file
     model_config = SettingsConfigDict(
         env_file=BASE_DIR / ".env",
         extra="ignore",
     )
+
+    @property
+    def effective_market_api_key(self) -> str:
+        return (
+            self.market_api_key
+            or self.data_gov_api_key
+            or os.getenv("DATA_GOV_API_KEY", "")
+            or os.getenv("MARKET_API_KEY", "")
+        ).strip()
 
     # Return the full path to the disease model
     @property
